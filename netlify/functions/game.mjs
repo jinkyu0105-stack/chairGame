@@ -64,7 +64,11 @@ export default async (request) => {
     if (body.type === 'start') {
       if (room.host !== player.id) throw Error('방장만 시작할 수 있습니다.');
       if (room.phase === 'finished') { room = newRoom(); room.host = player.id; room.players = [{ ...player, x: 480, y: 320, alive: true }]; }
-      if (room.phase === 'waiting') { room.phase = 'countdown'; room.countdown = 3; room.until = Date.now() + 3000; }
+      if (room.phase === 'waiting') {
+        // 혼자 연습할 때도 바로 게임 흐름을 확인할 수 있도록 연습 상대를 넣습니다.
+        if (room.players.length === 1) { add(room, '연습 여우'); add(room, '연습 판다'); }
+        room.phase = 'countdown'; room.countdown = 3; room.until = Date.now() + 3000;
+      }
     } else if (body.type === 'move' && player.alive && ['music', 'chairs'].includes(room.phase)) {
       const k = body.keys || {}; const dx = (k.right ? 1 : 0) - (k.left ? 1 : 0); const dy = (k.down ? 1 : 0) - (k.up ? 1 : 0);
       if (dx || dy) { const length = Math.hypot(dx, dy); player.x = clamp(player.x + dx / length * 34, 54, 906); player.y = clamp(player.y + dy / length * 34, 54, 586); }
