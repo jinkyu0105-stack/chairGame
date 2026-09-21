@@ -8,6 +8,7 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@netlify/blobs": "^9.1.2",
     "ws": "^8.18.0"
   }
 }
