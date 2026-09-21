@@ -2,7 +2,7 @@ const $ = (s) => document.querySelector(s);
 const lobby = $('#lobby'), roomView = $('#room'), message = $('#form-message');
 const canvas = $('#game'), ctx = canvas.getContext('2d');
 let ws, myId, state = { players: [], chairs: [], bananas: [], phase: 'lobby' }, roomCode = '', audio, lastPhase, lastCountdown;
-const netlifyMode = location.hostname.endsWith('.netlify.app') || Boolean(window.GAME_API_URL);
+const netlifyMode = !window.GAME_SERVER_URL && (location.hostname.endsWith('.netlify.app') || Boolean(window.GAME_API_URL));
 const apiUrl = window.GAME_API_URL || '/.netlify/functions/game';
 const heldKeys = { up:false, down:false, left:false, right:false };
 const music = new Audio('cute-instrumental.mp3');
