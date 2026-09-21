@@ -45,7 +45,8 @@ function add(room, name) {
 export default async (request) => {
   if (request.method !== 'POST') return json({ message: 'POST 요청만 가능합니다.' }, 405);
   try {
-    const body = await request.json(); const store = getStore('chair-game');
+    // 게임 방은 직전 요청의 결과를 즉시 읽어야 하므로, 캐시 지연 없는 읽기를 사용합니다.
+    const body = await request.json(); const store = getStore({ name: 'chair-game', consistency: 'strong' });
     let room;
     if (body.type === 'create') {
       let roomCode = code(); while (await store.get(`room:${roomCode}`)) roomCode = code();
